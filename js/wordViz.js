@@ -14,6 +14,7 @@ viz.directive("keyword", function($window) {
         
         max = scope.totals.max_doc_count;
         maxbg = scope.totals.max_bg_count;
+        max = maxbg;
         minscore = scope.totals.min_score;
         maxscore = scope.totals.max_score;
         
@@ -25,8 +26,6 @@ viz.directive("keyword", function($window) {
             scope.createGlyph();
         }
         
-        console.log([max-scope.data.doc_count,scope.data.doc_count]);
-        console.log([maxbg-(scope.data.bg_count-scope.data.doc_count),(scope.data.bg_count-scope.data.doc_count)]);
         scope.createGlyph = function () {
            var dataset = {
               docs: [max-scope.data.doc_count,scope.data.doc_count],

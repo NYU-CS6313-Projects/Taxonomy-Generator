@@ -15,6 +15,7 @@ viz.controller('vizCtrl', function ($scope, db) {
     $scope.addKeyword = function(list){
         var word = prompt("Type keyword");
         list.push(word);
+        $scope.load();
     }
     
     $scope.removeKeyword = function(word, list){
@@ -45,7 +46,7 @@ viz.controller('vizCtrl', function ($scope, db) {
                     $scope.totals.min_score = t.score;
                 
                 if(t.bg_count > $scope.totals.max_bg_count)
-                    $scope.totals.max_bg_count = (t.bg_count-t.doc_count);
+                    $scope.totals.max_bg_count = (t.bg_count);
             })
             console.log($scope.totals);
             document.getElementById("loading").style.display = "none";
