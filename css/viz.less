@@ -1,0 +1,210 @@
+@text: #5A6372;
+@dark: @text;
+@base: #4791CE;
+@light: #E2E7F0 ;
+@verylight: #EDF2F9;
+@good: #57D690 ;
+@bad: #F2796E ;
+
+
+html{
+    padding: 0px;
+} 
+
+body {
+    font-family: 'Roboto', 'Open Sans', sans-serif;
+    font-size: 9pt;
+    margin: 0px;
+    color: @text;
+    font-weight: 300;
+    
+    h1{
+        font-size: 18px;
+        margin: 0px;
+        margin-bottom: 10px;
+        padding: 5px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    input {
+      border-radius: 10px;
+      border: solid 1px #eeeeee;
+    }
+    input {
+      transition: all 0.3s ease-in-out;
+      outline: none;
+      padding: 3px 8px 3px 8px;
+    }
+    input:focus {
+      box-shadow: 0 0 5px #51cbee;
+      padding: 3px 8px 3px 8px;
+      border: 1px solid #51cbee;
+    }
+
+    button{
+        cursor: pointer;
+        height: 18px;
+        background-color: white;
+        border: solid 0px #000;
+        padding-top: 0px;
+        border-radius: 10px;
+        position: relative;
+        right: 0px;
+        outline: none;
+    }
+
+    .fa-minus-circle{
+        color: red;
+    }
+    
+    em{
+        background-color: @good;
+        color: white;
+        font-style: normal;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+}
+
+#loading{
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: white;
+    text-align: center;
+    padding-top: 100px;
+    font-size: 20px;
+}
+
+#taxonomyPanel{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    margin: 0px;
+
+    width: 200px;
+    input{
+        width: 140px;
+        font-size: 10pt;
+        background-color: @verylight;
+        border-radius: 10px;
+    }
+    .loadButton{
+        background-color: @good;
+        width: 200px;
+        color: white;
+        margin-top: 10px;
+        margin-bottom: 2px;
+        border-radius: 0px;
+    }
+    ul{
+        button {
+            position: absolute;
+            right: 0px;
+            top:0px;
+            height: 22px;
+            color: white;
+            background-color: @good;
+            border-radius: 0px;
+        }
+        margin: 0px;
+        padding-left: 0px;
+        list-style: none;
+        li{
+            margin: 0px;
+            padding: 3px;
+            padding-left: 5px;
+            position: relative;
+            .miniControls{
+                margin: 0px;
+                padding: 0px;
+                position: absolute;
+                right: 2px;
+                top: 0px;
+                display: none;
+                li{
+                    float: left;
+                }
+            }
+        }
+        
+        li:hover{
+            background-color: @light + #050505;
+            cursor: pointer;
+        }
+        li:hover .miniControls{
+            display: block;
+        }
+          
+        
+        .taxItem{
+            background-color: @verylight;
+            padding-left: 8px;
+        }
+     
+        .taxHead{
+            font-size: 10pt;
+            background-color: @light;
+        }
+    }
+    .taxNot{
+       .taxItem{
+            background-color: @verylight;
+        }
+     
+        .taxHead{
+            background-color: @light;
+        }  
+    }
+}
+
+#main {
+    position: fixed;
+    left: 210px;
+    bottom: 0px;
+    top: 0px;
+    right: 210px;
+    overflow: auto;
+    
+    .keywords{
+        padding: 0px;
+        margin: 0px;
+        li{
+            float: left;
+            list-style: none;
+            svg{
+                display: inline-block;
+            }
+        }
+        
+        
+    }
+}
+
+
+#tweets{
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 200px;
+    overflow: auto;
+    ul{
+        margin: 0px;
+        padding: 0px;
+    }
+    li{
+        list-style: none;
+        padding: 5px;
+        border-bottom: solid 1px @dark;
+        margin: 0px;
+    }
+    h1{
+        text-align: right;
+    }
+    
+}
