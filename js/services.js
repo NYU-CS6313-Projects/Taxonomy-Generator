@@ -46,7 +46,8 @@ vizServices.factory('db', function(client) {
                   "significant_terms": {
                     "field": "text",
                     "size": 50,
-                    "exclude": exclude
+                    "exclude": exclude,
+                      "gnd": {}
                   }
                 }
             }
