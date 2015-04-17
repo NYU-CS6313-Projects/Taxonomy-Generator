@@ -173,15 +173,48 @@ body {
     .keywords{
         padding: 0px;
         margin: 0px;
+        
         li{
+            padding: 5px;
             float: left;
             list-style: none;
+            text-align: center;
+            
             svg{
                 display: inline-block;
+                .scoreArcBase{
+                    fill: none;
+                    stroke: #ccc;
+                    stroke-width: 1px;
+                }
+                .scoreArc{
+                    fill: #ccc;
+                }
+                
             }
         }
-        
-        
+    }
+    
+    .venn-sets-word{
+        path {
+            fill: #009306 ;
+        }
+    }
+     .venn-sets-topic{
+        path {
+            fill: #e29c4b ;
+        }
+    }
+    .venn-area{
+        text{
+            display: none;
+        }
+    }
+    .venn-area:hover{
+        cursor: pointer;
+        text{
+            display: block;
+        }
     }
 }
 
