@@ -6,8 +6,8 @@ viz.directive("keyword", function($window) {
         totals: '='
     },
     link: function(scope, elem, attrs){
-         var width = 200,
-                height = 200,
+         var width = 120,
+                height = 120,
                 radius = Math.min(width, height) / 2;
         var color = d3.scale.category20();
         
@@ -19,14 +19,17 @@ viz.directive("keyword", function($window) {
         maxscore = scope.totals.max_score;
         
         scope.board = d3.select(elem[0]);
-        scope.gliphy = scope.board.append("svg");
+        scope.gliphy = scope.board.append("svg")
+            .attr("width", width)
+            .attr("height", height)
         scope.label = scope.board.append("h1").text(scope.data.key);
         
         scope.init = function(){
             scope.createGlyph();
         }
         
-        scope.createGlyph = function () {
+        
+        scope.createGlyph_old = function () {
            var dataset = {
               docs: [max-scope.data.doc_count,scope.data.doc_count],
               docsbg: [maxbg-scope.data.bg_count,scope.data.bg_count]
@@ -73,21 +76,75 @@ viz.directive("keyword", function($window) {
                 .attr("class", "arc")
                 .attr("fill", function(d, i) { return colorbg[i]; })
                 .attr("d", arc2);
-            
-            
-
-
         }
         
-        scope.update = function () {
-             scope.gliphy.selectAll("path")
-                .data(pie([max-scope.data.doc_count,scope.data.doc_count]))
-              .enter().append("path")
-                .attr("fill", function(d, i) { return color(i); })
-                .attr("d", arc);
+        
+        scope.createVeen = function () {
+            var sets = [ 
+                {sets: ['word'], size:  scope.data.bg_count}, 
+                {sets: ['topic'], size: scope.totals.total},
+                {sets: ['word','topic'], size: scope.data.doc_count}];
+            
+            var chart = venn.VennDiagram() 
+                .width(100)
+                .height(100)
+            var veen = scope.gliphy.append("g")
+                .attr("transform", "translate(" + 10 +"," + 10 +")")
+                .datum(sets).call(chart)
+            scope.gliphy.selectAll(".venn-circle path")
+                .style("fill", null);
+            
         }
         
+        scope.createGlyph = function() {
+            var anScore = (scope.data.score * 360)/2;
+            
+            var scoreArc = d3.svg.arc()
+                .innerRadius(radius-8)
+                .outerRadius(radius-2)
+                .startAngle(-1*anScore * (Math.PI/180)) //converting from degs to radians
+                .endAngle(anScore * (Math.PI/180)) //just radians
+            
+            var scoreArcBase = d3.svg.arc()
+                .innerRadius(radius-8)
+                .outerRadius(radius-2)
+                .startAngle(0 * (Math.PI/180)) //converting from degs to radians
+                .endAngle(360 * (Math.PI/180)) //just radians
+
+            scope.gliphy.append("path")
+                .attr("class", "scoreArc")
+                .attr("d", scoreArc)
+                .attr("transform", "translate(" + radius +"," + radius +")")
+            
+            scope.gliphy.append("path")
+                .attr("class", "scoreArcBase")
+                .attr("d", scoreArcBase)
+                .attr("transform", "translate(" + radius +"," + radius +")")
+
+            scope.createVeen();
+        }
+        
+        //-----------------------------------------
         scope.init();
     }
   };
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

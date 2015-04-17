@@ -6,7 +6,7 @@ viz.controller('vizCtrl', function ($scope, db) {
         any: ["climate change"],
         and: [],
         not: [],
-        ignore: []
+        ignore: ["change"]
     }
     
     $scope.keywords = [];

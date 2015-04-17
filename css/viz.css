@@ -150,11 +150,36 @@ body em {
   margin: 0px;
 }
 #main .keywords li {
+  padding: 5px;
   float: left;
   list-style: none;
+  text-align: center;
 }
 #main .keywords li svg {
   display: inline-block;
+}
+#main .keywords li svg .scoreArcBase {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1px;
+}
+#main .keywords li svg .scoreArc {
+  fill: #ccc;
+}
+#main .venn-sets-word path {
+  fill: #009306 ;
+}
+#main .venn-sets-topic path {
+  fill: #e29c4b ;
+}
+#main .venn-area text {
+  display: none;
+}
+#main .venn-area:hover {
+  cursor: pointer;
+}
+#main .venn-area:hover text {
+  display: block;
 }
 #tweets {
   position: fixed;
