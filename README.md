@@ -1,8 +1,6 @@
-# Project X
+# Taxonomy Generator
 
-TODO describe project here
+This project aims to produce an easy and fast way for users to create taxonomies through interaction and visualization.
 
 A live demo can be found [here](http://NYU-CS6313-Projects.github.io/sp2015-group1/).
 
-You can use the `deploy.sh` script to keep the `gh-pages` branch up-to-date.
-When forking this project be sure to update the link to the demo page in this file.
