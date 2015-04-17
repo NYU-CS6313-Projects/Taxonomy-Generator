@@ -2,7 +2,7 @@ var vizServices = angular.module('vizServices', ['elasticsearch']);
 
 vizServices.service('client', function (esFactory) {
     return esFactory({
-        host: 'localhost:9200',
+        host: 'http://vgc.poly.edu/projects/r2sense/',
         apiVersion: '1.4'
     });
 });
