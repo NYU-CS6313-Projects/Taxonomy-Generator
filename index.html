@@ -76,9 +76,9 @@
         <!-- /.row -->
         <div class="row">
             <div class="input-group col-lg-6 center">
-                <input type="text" class="form-control" placeholder="Type a topic name">
+                <input type="text" class="form-control" id="topicTxt" placeholder="Type a topic name">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go</button>
+                    <button class="btn btn-default" onclick="goToViz()" type="button">Go</button>
                 </span>
             </div><!-- /input-group -->
         </div>
@@ -97,6 +97,11 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        function goToViz(){
+            window.location = "viz.html#topic=" + $("#topicTxt").val();
+        }
+    </script>
     
 </body>
 
