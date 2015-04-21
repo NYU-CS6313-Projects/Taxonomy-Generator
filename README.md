@@ -1,8 +1,10 @@
 # Taxonomy Generator
 
+###link
+
 A live demo can be found [here](http://NYU-CS6313-Projects.github.io/sp2015-group1/).
 
-Project Info:
+###Project Info:
 
 This project aims to produce an easy and fast way for users to create taxonomies through interaction and visualization.
 
@@ -10,7 +12,7 @@ Nowadays many people uses the social media to express their opinion or discuss a
 
 To solve this problem many approaches have been proposed many of them relying in machine learning algorithms. But the problem with machine learning approaches is that they (1) needs specialized data mining staff (2) do not provide a clear description of what belongs to the topic and what not, not allowing the domain expert to easy interact with. Another option is to create a taxonomy for the topic, that is, a description of which words belong to a topic and which ones do not. This taxonomy is then used to perform a query in the documents and get only relevant documents.
 
-Project group member: 
+###Project group member: 
 
 Cristian, Peixin, Wei
 
