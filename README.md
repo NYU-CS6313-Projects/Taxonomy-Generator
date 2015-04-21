@@ -1,6 +1,6 @@
 # Taxonomy Generator
 
-###link
+###link:
 
 A live demo can be found [here](http://NYU-CS6313-Projects.github.io/sp2015-group1/).
 
