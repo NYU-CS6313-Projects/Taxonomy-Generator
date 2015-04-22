@@ -16,7 +16,7 @@ vizServices.factory('db', function(client) {
         var type = 'status';
         
         var querystring = "";
-        var exclude = "@.*|_link";
+        var exclude = "@.*|.*_.*|_link";
         
         any.forEach(function(w){
             querystring += '"'+w +'" ';
@@ -25,11 +25,11 @@ vizServices.factory('db', function(client) {
         
         not.forEach(function(w){
             querystring += "-'" + w + "' ";
-            exclude += "|"+ w ;
+            exclude += "|"+ w;
         });
         if(hide)
             hide.forEach(function(w){
-                exclude += "|"+ w ;
+                exclude += "|"+ w;
             });
         
         
@@ -44,7 +44,7 @@ vizServices.factory('db', function(client) {
             "aggs": {
                 "NAME": {
                   "significant_terms": {
-                    "field": "text",
+                    "field": "text.bigram",
                     "size": 50,
                     "exclude": exclude,
                       "gnd": {}
@@ -56,7 +56,7 @@ vizServices.factory('db', function(client) {
         return client.search({
           index: index,
           type: type,
-          size: 10,
+          size: 50,
           body: query
         });
     }
