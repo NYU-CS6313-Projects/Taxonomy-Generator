@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="viz">
+    <head>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link href='http://fonts.googleapis.com/css?family=Roboto:300,700,100,400' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/viz.css">
+    </head>
+    <body ng-controller="vizCtrl">
+       
+        <div id="taxonomyPanel">
+           <h1>Taxonomy Generator</h1>
+           <label>Topic: </label><input ng-model="topic">
+           <button class="loadButton" ng-click="load()">Load</button>
+            <ul class="taxAny">
+               <li class="taxHead">Any <button ng-click="addKeyword(taxonomy.any)">+</button></li>
+               <li class="taxItem" ng-repeat="w in taxonomy.any">{{w}} 
+                   <ul class="miniControls">
+                       <li><a href="" ng-click="removeKeyword(w,taxonomy.any)"><i class="fa fa-minus-circle"></i></a></li>
+                   </ul> 
+               </li>
+            </ul>
+            <ul class="taxAnd">
+               <li class="taxHead">And Any <button ng-click="addKeyword(taxonomy.and)">+</button></li>
+               <li class="taxItem" ng-repeat="w in taxonomy.and">{{w}}
+                   <ul class="miniControls">
+                       <li><a href="" ng-click="removeKeyword(w,taxonomy.and)"><i class="fa fa-minus-circle"></i></a></li>
+                   </ul> 
+               </li>
+            </ul>
+            
+            <ul class="taxNot">
+               <li class="taxHead">And Not <button ng-click="addKeyword(taxonomy.not)">+</button></li>
+               <li class="taxItem" ng-repeat="w in taxonomy.not">{{w}}
+                   <ul class="miniControls">
+                       <li><a href="" ng-click="removeKeyword(w,taxonomy.not)"><i class="fa fa-minus-circle"></i></a></li>
+                   </ul> 
+               </li>
+            </ul>
+            
+            <ul class="taxIgnore">
+               <li class="taxHead">Ignore <button ng-click="addKeyword(taxonomy.ignore)">+</button></li>
+               <li class="taxItem" ng-repeat="w in taxonomy.ignore">{{w}}
+                   <ul class="miniControls">
+                       <li><a href="" ng-click="removeKeyword(w,taxonomy.ignore)"><i class="fa fa-minus-circle"></i></a></li>
+                   </ul> 
+               </li>
+            </ul>
+        </div>
+        <div id="main">
+           
+           <div>
+               <h1><span style="font-weight: 700;">{{totals.total}}</span>  documents</h1>
+           </div>
+            <ul class="keywords">
+                <li ng-repeat="w in keywords">
+                    <keyword data="w" totals="totals"></keyword>
+                </li>
+            </ul>
+        </div>
+        <div id="tweets">
+           <h1>Tweets</h1>
+            <ul>
+                <li ng-repeat="t in tweets"><span ng-bind-html="t.highlight.text[0]"></span></li>
+            </ul>
+        </div>
+        <div id="loading">Loading...</div>
+    </body>
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.3.15/angular-route.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/venn.js"></script>
+    <script src="js/elasticsearch/elasticsearch.angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/services2.js"></script>
+    <script src="js/viz.js"></script>
+    <script src="js/wordViz.js"></script>
+</html>
