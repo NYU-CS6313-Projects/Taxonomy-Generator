@@ -14,10 +14,9 @@ viz.controller('vizCtrl', function ($scope, db) {
     //Taxonomy operators
     $scope.addKeyword = function(list){
         var word = prompt("Type keyword");
-        if(word!=""){
         list.push(word);
         $scope.load();
-        }
+        
     }
     
     $scope.removeKeyword = function(word, list){
