@@ -23,7 +23,8 @@
                <li class="taxHead">And Any <button ng-click="addKeyword(taxonomy.and)">+</button></li>
                <li class="taxItem" ng-repeat="w in taxonomy.and">{{w}}
                    <ul class="miniControls">
-                       <li><a href="" ng-click="removeKeyword(w,taxonomy.and)"><i class="fa fa-power-off"></i><i class="fa fa-minus-circle"></i></a></li>
+                       <li><a href="" ng-click="removeKeyword(w,taxonomy.and)"><i class="fa fa-power-off"></i></a></li>
+                       <li><a href="" ng-click="removeKeyword(w,taxonomy.and)"><i class="fa fa-minus-circle"></i></a></li>
                    </ul> 
                </li>
             </ul>
