@@ -45,6 +45,7 @@ body button {
 body .fa-minus-circle {
   color: red;
 }
+
 body em {
   background-color: #57d690;
   color: white;
@@ -116,27 +117,28 @@ body em {
 #taxonomyPanel ul li .miniControls li {
   float: left;
 }
-#taxonomyPanel ul li:hover {
+/*#taxonomyPanel ul li:hover {
   background-color: #e7ecf5;
   cursor: pointer;
-}
+}*/
 #taxonomyPanel ul li:hover .miniControls {
   display: block;
 }
-#taxonomyPanel ul .taxItem {
+
+#taxonomyPanel ul .taxItem{
   background-color: #edf2f9;
   padding-left: 8px;
 }
 #taxonomyPanel ul .taxHead {
   font-size: 10pt;
-  background-color: #e2e7f0;
+  background-color: #FFF0E0;
 }
-#taxonomyPanel .taxNot .taxItem {
+/*#taxonomyPanel .taxNot .taxItem {
   background-color: #edf2f9;
 }
 #taxonomyPanel .taxNot .taxHead {
   background-color: #e2e7f0;
-}
+}*/
 #main {
   position: fixed;
   left: 210px;
