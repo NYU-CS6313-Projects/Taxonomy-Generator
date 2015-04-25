@@ -8,7 +8,6 @@ viz.controller('vizCtrl', function ($scope, db) {
         not: [],
         ignore: ["change"]
     }
-    
     $scope.keywords = [];
     
     //Taxonomy operators
@@ -20,6 +19,11 @@ viz.controller('vizCtrl', function ($scope, db) {
     
     $scope.removeKeyword = function(word, list){
         list.remove(word);
+    }
+    
+    $scope.showDetail = function(word){
+        $scope.selected = word;
+        $scope.showDialog = true;
     }
     
     //Data operators

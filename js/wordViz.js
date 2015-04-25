@@ -6,11 +6,14 @@ viz.directive("keyword", function($window) {
         totals: '='
     },
     link: function(scope, elem, attrs){
-         var width = 120,
-                height = 120,
+        
+        if(!scope.totals || !scope.data)
+            return;
+        
+         var width = 80,
+                height = 80,
                 radius = Math.min(width, height) / 2;
         var color = d3.scale.category20();
-        
         
         max = scope.totals.max_doc_count;
         maxbg = scope.totals.max_bg_count;
@@ -86,10 +89,10 @@ viz.directive("keyword", function($window) {
                 {sets: ['word','topic'], size: scope.data.doc_count}];
             
             var chart = venn.VennDiagram() 
-                .width(100)
-                .height(100)
+                .width(80)
+                .height(80)
             var veen = scope.gliphy.append("g")
-                .attr("transform", "translate(" + 10 +"," + 10 +")")
+                .attr("transform", "translate(" + 0 +"," + 0 +")")
                 .datum(sets).call(chart)
             scope.gliphy.selectAll(".venn-circle path")
                 .style("fill", null);
@@ -100,13 +103,13 @@ viz.directive("keyword", function($window) {
             var anScore = (scope.data.score * 360)/2;
             
             var scoreArc = d3.svg.arc()
-                .innerRadius(radius-8)
+                .innerRadius(radius-6)
                 .outerRadius(radius-2)
                 .startAngle(-1*anScore * (Math.PI/180)) //converting from degs to radians
                 .endAngle(anScore * (Math.PI/180)) //just radians
             
             var scoreArcBase = d3.svg.arc()
-                .innerRadius(radius-8)
+                .innerRadius(radius-6)
                 .outerRadius(radius-2)
                 .startAngle(0 * (Math.PI/180)) //converting from degs to radians
                 .endAngle(360 * (Math.PI/180)) //just radians

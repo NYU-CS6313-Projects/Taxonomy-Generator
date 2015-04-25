@@ -53,7 +53,7 @@
            </div>
             <ul class="keywords">
                 <li ng-repeat="w in keywords">
-                    <keyword data="w" totals="totals"></keyword>
+                    <keyword data="w" totals="totals" ng-click="showDetail(w)"></keyword>
                 </li>
             </ul>
         </div>
@@ -64,6 +64,8 @@
             </ul>
         </div>
         <div id="loading">Loading...</div>
+        <div details show='showDialog' data='selected' totals="totals" ></div>
+        
     </body>
     
     
@@ -77,4 +79,5 @@
     <script src="js/services.js"></script>
     <script src="js/viz.js"></script>
     <script src="js/wordViz.js"></script>
+    <script src="js/details.js"></script>
 </html>
