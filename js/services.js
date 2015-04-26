@@ -12,7 +12,9 @@ vizServices.factory('db', function(client) {
     var client = client;
     
     self.load = function(any, not, hide){
-        var index = 'twitter3';
+
+        var index = 'twitter2';
+
         var type = 'status';
         
         var querystring = "";

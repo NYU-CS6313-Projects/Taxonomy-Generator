@@ -1,0 +1,12 @@
+<div class='detail' ng-show='show'>
+  <div class='overlay' ng-click='hideModal()'></div>
+  <div class='dialog' ng-style='dialogStyle'>
+    <div class='close' ng-click='hideModal()'>X</div>
+    <div class='content'>
+        <h1>{{ data.key }}</h1>
+        <pre>{{ data|json }}</pre>
+        <pre>{{ totals|json }}</pre>
+        <keyword data="data" totals="totals"></keyword>
+    </div>
+  </div>
+</div>
