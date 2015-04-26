@@ -22,6 +22,7 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
             name: 'New Item 2'
         }
     ];
+
     $scope.keywords = [];
     
     //Taxonomy operators
@@ -46,6 +47,7 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
         var item = $scope.taxonomy[fromList][from];
         DragDropHandler.addObject(item, $scope.taxonomy[toList], to);
         $scope.taxonomy[fromList].splice(from, 1);
+
     }
 
     $scope.createObject = function(object, to, list) {
@@ -58,10 +60,11 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
     $scope.showDetail = function(word){
         $scope.selected = word;
         $scope.showDialog = true;
+
     }
-    
-    //Data operators
-    $scope.load = function(){
+  
+    // Data operators
+     $scope.load = function(){
         db.load($scope.taxonomy.any, $scope.taxonomy.not, $scope.taxonomy.ignore).then(function(r){
             $scope.keywords = r.aggregations.NAME.buckets;
             $scope.tweets = r.hits.hits;
