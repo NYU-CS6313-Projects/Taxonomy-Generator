@@ -11,6 +11,12 @@ viz.directive('details', function() {
         scope.hideModal = function(){
             scope.show = false;
         }
+        
+        scope.add = function(list) {
+            list.push({word: scope.data.key, on:true});
+            scope.$parent.load();
+            scope.hideModal();
+        }
     }
   };
 });

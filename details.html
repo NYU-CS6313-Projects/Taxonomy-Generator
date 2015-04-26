@@ -7,6 +7,13 @@
         <pre>{{ data|json }}</pre>
         <pre>{{ totals|json }}</pre>
         <keyword data="data" totals="totals"></keyword>
+        <div style="text-align: right">
+            <button ng-click="add($parent.taxonomy.any)">Any</button>
+            <button ng-click="add($parent.taxonomy.and)">And</button>
+            <button ng-click="add($parent.taxonomy.not)">Not</button>
+            <button ng-click="add($parent.taxonomy.ignore)">Ignore</button>
+        </div>
     </div>
+    
   </div>
 </div>

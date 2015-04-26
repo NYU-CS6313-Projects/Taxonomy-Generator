@@ -5,31 +5,35 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
     $scope.topic = "climate change";
 
     $scope.taxonomy = {
-        any: ["climate change"],
-        and: [],
-        not: [],
-        ignore: ["change"],
+        any: [
+            {word: "climate", on: true}, 
+            {word: "global", on: true}
+        ],
+        and: [
+            {word: "change", on: true}
+        ],
+        not: [
+            {word: "warming", on: true}
+        ],
+        ignore: [
+            {word: "change"}
+        ],
         turnoff:[]
     };
 
-    $scope.objects = [
-        {
-            id: 1,
-            name: 'New Item 1'
-        },
-        {
-            id: 2,
-            name: 'New Item 2'
-        }
-    ];
-
+   
     $scope.keywords = [];
     
     //Taxonomy operators
     $scope.addKeyword = function(list){
         var word = prompt("Type keyword");
-        list.push(word);
-        // $scope.load();
+        list.push({word: word, on:true});
+        $scope.load();
+    }
+    
+    $scope.add = function(list, value){
+        list.push(value);
+        $scope.load();
     }
 
     $scope.removeKeyword = function(word,List) { 
@@ -56,7 +60,6 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
         DragDropHandler.addObject(newItem, $scope.taxonomy[list], to);
     };
     
-
     $scope.showDetail = function(word){
         $scope.selected = word;
         $scope.showDialog = true;
@@ -65,7 +68,9 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
   
     // Data operators
      $scope.load = function(){
-        db.load($scope.taxonomy.any, $scope.taxonomy.not, $scope.taxonomy.ignore).then(function(r){
+         document.getElementById("loading").style.display = "block";
+        db.load($scope.taxonomy.any, $scope.taxonomy.not, $scope.taxonomy.ignore, $scope.taxonomy.and).then(function(r){
+            
             $scope.keywords = r.aggregations.NAME.buckets;
             $scope.tweets = r.hits.hits;
                     
@@ -89,7 +94,7 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
                 if(t.bg_count > $scope.totals.max_bg_count)
                     $scope.totals.max_bg_count = (t.bg_count);
             })
-            console.log($scope.totals);
+
             document.getElementById("loading").style.display = "none";
         });
     }
