@@ -11,27 +11,37 @@ vizServices.factory('db', function(client) {
     var self = this;
     var client = client;
     
-    self.load = function(any, not, hide){
+    self.load = function(any, not, hide, and){
 
         var index = 'twitter2';
 
         var type = 'status';
         
-        var querystring = "";
+        var querystring = "(";
         var exclude = "@.*|_link";
         
         any.forEach(function(w){
-            querystring += '"'+w +'" ';
-            exclude += "|"+ w;
+            querystring += '"'+w.word +'" ';
+            exclude += "|"+ w.word;
         })
         
+        querystring += ")";
+        if(and.length > 0){
+        querystring += "  AND (";
+        and.forEach(function(w){
+            querystring += '"'+w.word +'" ';
+            exclude += "|"+ w.word;
+        })
+        querystring += ") ";
+        }
+        
         not.forEach(function(w){
-            querystring += "-'" + w + "' ";
-            exclude += "|"+ w ;
+            querystring += "-'" + w.word + "' ";
+            exclude += "|"+ w.word ;
         });
         if(hide)
             hide.forEach(function(w){
-                exclude += "|"+ w ;
+                exclude += "|"+ w.word ;
             });
         
         
@@ -58,7 +68,7 @@ vizServices.factory('db', function(client) {
         return client.search({
           index: index,
           type: type,
-          size: 10,
+          size: 50,
           body: query
         });
     }

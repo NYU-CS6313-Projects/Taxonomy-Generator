@@ -115,14 +115,16 @@ viz.directive("keyword", function($window) {
                 .endAngle(360 * (Math.PI/180)) //just radians
 
             scope.gliphy.append("path")
+                .attr("class", "scoreArcBase")
+                .attr("d", scoreArcBase)
+                .attr("transform", "translate(" + radius +"," + radius +")")
+            
+            scope.gliphy.append("path")
                 .attr("class", "scoreArc")
                 .attr("d", scoreArc)
                 .attr("transform", "translate(" + radius +"," + radius +")")
             
-            scope.gliphy.append("path")
-                .attr("class", "scoreArcBase")
-                .attr("d", scoreArcBase)
-                .attr("transform", "translate(" + radius +"," + radius +")")
+            
 
             scope.createVeen();
         }

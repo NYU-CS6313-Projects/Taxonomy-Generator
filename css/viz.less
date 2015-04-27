@@ -1,11 +1,23 @@
-@text: #5A6372;
-@dark: @text;
-@base: #4791CE;
-@light: #E2E7F0 ;
-@verylight: #EDF2F9;
-@good: #57D690 ;
-@bad: #F2796E ;
+/* Colors -------- */
+@default: #313131;
+@defaultLight: lighten(@default,50%);
+@defaultLighter: lighten(@default,75%);
 
+@color1: #39C5E5;
+@color1Light: lighten(@color1,20%);
+@color1Lighter: lighten(@color1,38%);
+
+@color2: #FDC701;
+@color2Light: @color2 + #111;
+@color2Lighter: @color2Light + #111;
+
+@color3: #8DCA35;
+@color3Light: @color3 + #111;
+@color3Lighter: @color3Light + #111;
+
+@color4: #E5393C;
+@color4Light: lighten(@color4,20%);
+@color4Lighter: lighten(@color4,38%);
 
 html{
     padding: 0px;
@@ -13,9 +25,9 @@ html{
 
 body {
     font-family: 'Roboto', 'Open Sans', sans-serif;
-    font-size: 9pt;
+    font-size: 6pt;
     margin: 0px;
-    color: @text;
+    color: @default;
     font-weight: 300;
     
     h1{
@@ -29,7 +41,7 @@ body {
 
     input {
       border-radius: 10px;
-      border: solid 1px #eeeeee;
+      border: none;
     }
     input {
       transition: all 0.3s ease-in-out;
@@ -39,7 +51,7 @@ body {
     input:focus {
       box-shadow: 0 0 5px #51cbee;
       padding: 3px 8px 3px 8px;
-      border: 1px solid #51cbee;
+      border: none;
     }
 
     button{
@@ -59,7 +71,7 @@ body {
     }
     
     em{
-        background-color: @good;
+        background-color: @color1;
         color: white;
         font-style: normal;
         padding-left: 3px;
@@ -85,16 +97,18 @@ body {
     top: 0px;
     bottom: 0px;
     margin: 0px;
-
+    font-size: 9pt;
     width: 200px;
+    box-shadow:  1px 1px 1px 1px #eee;
+    
     input{
         width: 140px;
         font-size: 10pt;
-        background-color: @verylight;
+        background-color: @color1Lighter;
         border-radius: 10px;
     }
     .loadButton{
-        background-color: @good;
+        background-color: @color1;
         width: 200px;
         color: white;
         margin-top: 10px;
@@ -108,7 +122,7 @@ body {
             top:0px;
             height: 22px;
             color: white;
-            background-color: @good;
+            background-color: @color3;
             border-radius: 0px;
         }
         margin: 0px;
@@ -133,7 +147,7 @@ body {
         }
         
         li:hover{
-            background-color: @light + #050505;
+            background-color: @color1 + #050505;
             cursor: pointer;
         }
         li:hover .miniControls{
@@ -142,42 +156,48 @@ body {
           
         
         .taxItem{
-            background-color: @verylight;
+            background-color: white;
             padding-left: 8px;
         }
      
         .taxHead{
             font-size: 10pt;
-            background-color: @light;
+            background-color: @color1Lighter;
         }
     }
     .taxNot{
-       .taxItem{
-            background-color: @verylight;
-        }
-     
         .taxHead{
-            background-color: @light;
+            background-color: @color4Lighter;
         }  
     }
 }
 
 #main {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
     position: fixed;
-    left: 210px;
+    z-index: -1;
+    left: 200px;
     bottom: 0px;
     top: 0px;
-    right: 210px;
+    right: 200px;
     overflow: auto;
+    background-color: lighten(@color1,43%);
     
     .keywords{
         padding: 0px;
         margin: 0px;
         
+        li:hover {
+            background-color: @color1Lighter;
+        }
+        
         li{
             padding: 5px;
             width: 90px;
             height: 130px;
+            border-radius: 10px;
             float: left;
             list-style: none;
             text-align: center;
@@ -189,12 +209,10 @@ body {
             svg{
                 display: inline-block;
                 .scoreArcBase{
-                    fill: none;
-                    stroke: #ccc;
-                    stroke-width: 1px;
+                    fill: @defaultLighter;
                 }
                 .scoreArc{
-                    fill: #ccc;
+                    fill: @defaultLight;
                 }
                 
             }
@@ -203,12 +221,12 @@ body {
     
     .venn-sets-word{
         path {
-            fill: #009306 ;
+            fill: @color2 ;
         }
     }
      .venn-sets-topic{
         path {
-            fill: #e29c4b ;
+            fill: @color3 ;
         }
     }
     .venn-area{
@@ -216,14 +234,8 @@ body {
             display: none;
         }
         path {
-            stroke: #ccc;
+            stroke: @defaultLight;
             stroke-width: 1px;
-        }
-    }
-    .venn-area:hover{
-        cursor: pointer;
-        text{
-            display: block;
         }
     }
 }
@@ -236,6 +248,8 @@ body {
     bottom: 0px;
     width: 200px;
     overflow: auto;
+    font-size: 9pt;
+    box-shadow:  -1px 1px 1px 1px #eee;
     ul{
         margin: 0px;
         padding: 0px;
@@ -243,12 +257,13 @@ body {
     li{
         list-style: none;
         padding: 5px;
-        border-bottom: solid 1px @dark;
+        border-bottom: solid 1px @color1;
         margin: 0px;
     }
     h1{
         text-align: right;
     }
+    
     
 }
 
@@ -261,7 +276,7 @@ body {
       left:0;
       width:100%;
       height:100%;
-      background-color:#000000;
+      background-color:@default;
       opacity: 0.8;
     }
     .dialog {
@@ -279,10 +294,19 @@ body {
 
       background-color: #fff;
       box-shadow: 4px 4px 80px #000;
+        
     }
     .content {
       padding:10px;
+      padding-bottom: 20px;
       text-align: left;
+        button {
+            background-color: @color1;
+            width: 100px;
+            height: 20px;
+            color: white;
+          
+        }
     }
     .close {
       position: absolute;

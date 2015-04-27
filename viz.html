@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="viz">
     <head>
-        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <link href='http://fonts.googleapis.com/css?family=Roboto:300,700,100,400' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/viz.css">    
     </head>
@@ -10,7 +10,7 @@
         <div id="taxonomyPanel">
 
            <h1>Taxonomy Generator</h1>
-           <label>Topic: </label><input ng-model="topic">
+           <label>Topic: </label> <input ng-model="topic">
            <button class="loadButton" ng-click="load()">Load</button>
 
             <ul class="taxAny">
@@ -21,7 +21,7 @@
                 ng-create='createObject(object, to, list)'
                 id="any" class="sortable">
                 
-               <li class="taxItem" ng-repeat="w in taxonomy.any">{{w}} 
+               <li class="taxItem" ng-repeat="w in taxonomy.any">{{w.word}} 
                    <ul class="miniControls">
                        <li ><a href="" ng-click="removeKeyword(w,taxonomy.any)"><i class="fa fa-minus-circle"></i></a></li>
                    </ul> 
@@ -38,7 +38,7 @@
                 ng-create='createObject(object, to, list)'
                 id="and" class="sortable">
 
-               <li class="taxItem" ng-repeat="w in taxonomy.and">{{w}}
+               <li class="taxItem" ng-repeat="w in taxonomy.and">{{w.word}}
                    <ul class="miniControls">
                        <li><a href="" ng-click="removeKeyword(w,taxonomy.and)"><i class="fa fa-minus-circle"></i></a></li>
                    </ul> 
@@ -55,7 +55,7 @@
                 ng-create='createObject(object, to, list)'
                 id="not" class="sortable">
             
-               <li class="taxItem" ng-repeat="w in taxonomy.not">{{w}}
+               <li class="taxItem" ng-repeat="w in taxonomy.not">{{w.word}}
                    <ul class="miniControls">
                        <li><a href="" ng-click="removeKeyword(w,taxonomy.not)"><i class="fa fa-minus-circle"></i></a></li>
                    </ul> 
@@ -63,6 +63,7 @@
             </ul>
             </ul>
             
+            <hr>
 
             <ul class="taxIgnore">
                <li class="taxHead">Ignore <button ng-click="addKeyword(taxonomy.ignore)">+</button></li>
@@ -71,7 +72,7 @@
                 ng-create='createObject(object, to, list)'
                 id="ignore" class="sortable"> 
 
-               <li class="taxItem" ng-repeat="w in taxonomy.ignore">{{w}}
+               <li class="taxItem" ng-repeat="w in taxonomy.ignore">{{w.word}}
                    <ul class="miniControls">
                        <li><a href="" ng-click="removeKeyword(w,taxonomy.ignore)"><i class="fa fa-minus-circle"></i></a></li>
                    </ul> 
@@ -79,23 +80,7 @@
             </ul>
             </ul>
 
-
-            <ul class="taxIgnore">
-               <li class="taxHead">Turnoff <button ng-click="addKeyword(taxonomy.turnoff)">+</button></li>
-            <ul droppable='taxonomy.turnoff'
-                ng-move='moveObject(from, to, fromList, toList)'
-                ng-create='createObject(object, to, list)'
-                id="turnoff" class="sortable"> 
-
-               <li class="taxItem" ng-repeat="w in taxonomy.turnoff">{{w}}
-                   <ul class="miniControls">
-                       <li><a href="" ng-click="removeKeyword(w,taxonomy.turnoff)"><i class="fa fa-minus-circle"></i></a></li>
-                   </ul> 
-               </li>
-            </ul>
-            </ul>
-
-             <pre>{{ taxonomy | json }}</pre>
+             <!-- <pre>{{ taxonomy | json }}</pre> -->
         </div>
         <div id="main">
            
@@ -115,7 +100,7 @@
             </ul>
         </div>
         <div id="loading">Loading...</div>
-        <div details show='showDialog' data='selected' totals="totals" ></div>
+        <div details show='showDialog' data='selected' taxonomy="taxonomy" totals="totals" ></div>
         
     </body>
     
