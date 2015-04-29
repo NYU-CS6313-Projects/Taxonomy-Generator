@@ -6,14 +6,13 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
 
     $scope.taxonomy = {
         any: [
-            {word: "climate", on: true}, 
-            {word: "global", on: true}
+            {word: "climate change", on: true}
         ],
         and: [
-            {word: "change", on: true}
+            
         ],
         not: [
-            {word: "warming", on: true}
+            
         ],
         ignore: [
             {word: "change"}
@@ -68,7 +67,7 @@ viz.controller('vizCtrl', function ($scope, db, DragDropHandler) {
   
     // Data operators
      $scope.load = function(){
-         document.getElementById("loading").style.display = "block";
+        // document.getElementById("loading").style.display = "block";
         db.load($scope.taxonomy.any, $scope.taxonomy.not, $scope.taxonomy.ignore, $scope.taxonomy.and).then(function(r){
             
             $scope.keywords = r.aggregations.NAME.buckets;
