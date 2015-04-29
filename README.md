@@ -2,7 +2,7 @@
 
 ###link:
 
-A live demo can be found [here](http://NYU-CS6313-Projects.github.io/sp2015-group1/).
+A live demo can be found [here](http://nyu-cs6313-projects.github.io/sp2015-group1/viz.html).
 
 ###Project Info:
 
