@@ -1,0 +1,605 @@
+/*Sizes   ---------*/
+@title-height: 35px;
+@taxonomy-width: 230px;
+@summary-height: 100px;
+@detail-height: 150px;
+
+
+/* Colors ---------*/
+@shadow: #ccc;
+@Primary: #489BD5;
+@PrimaryL: #C1DDF1;
+@Secondary: #B3D548; 
+@Third: #FF9203;
+@Forth: #FF1E22;
+@TextOnDark: white;
+@BaseText: #226695;
+@Red: #D05A16 ;
+
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+html{}
+body{
+    font-family: 'Quicksand', sans-serif;
+    margin: 0px;
+    font-size: 12px;
+    
+    .axis .tick line {
+        stroke: lightgrey;
+        opacity: 0.7;
+    }
+    .axis path {
+          stroke-width: 0;
+    }
+}
+input{
+    font-family: 'Quicksand', sans-serif;
+}
+
+button{
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+}
+
+.documents{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 220px;
+    
+    h1{
+        font-size: 18px;
+        color: @BaseText;
+        font-weight: 400;
+    }
+    ul {
+        position: absolute;
+        bottom: 0px;
+        top: 37px;
+        left: 0px;
+        right: 0px;
+        margin: 0px;
+        overflow: auto;
+        list-style: none;
+        padding: 0px;
+        li {
+            padding: 5px;
+            font-size: 11px;
+        }
+    }
+    
+    li:nth-child(odd)  {
+        background-color: #EEF6FB ;
+    }
+}
+
+em{
+    font-weight: 700;
+    color: @Primary;
+    text-decoration: underline;
+}
+
+#title {
+    margin: 0px;
+    padding: 0px;
+    height: @title-height;
+    box-shadow: 1px 1px 5px 0px #ccc;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    z-index: 5;
+    background-color: white;
+    
+    ul {
+        position: relative;
+        margin: 0px;
+        padding: 0px;
+        li{
+            vertical-align: middle;
+           display: inline-block;
+           list-style: none;
+            margin: 0px;
+        }
+    }
+    
+    label {
+        margin-left: 10px;
+        font-size: 12px;
+    }
+    
+    select {
+        background-color: white;
+    }
+ 
+    button {
+       margin: 0px;
+        display: inline-block;
+        border: none;
+        height: @title-height;
+        background-color: @Secondary;
+        color: @TextOnDark;
+    }
+    
+    h1 {
+        padding-top: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin: 0px;
+        height: @title-height - 5;
+        font-size: 18px;
+        background-color: @Primary;
+        color: @TextOnDark;
+        font-weight: 400;
+        display: inline-block;
+    }
+}
+
+#taxonomy{
+    position: fixed;
+    left: 0px;
+    top: 35px;
+    bottom: 0px;
+    width: @taxonomy-width;
+    
+    ul{
+        list-style: none;
+        padding: 0px;
+        padding-left: 2px;
+    }
+    li{
+        overflow: hidden;
+        position: relative;
+    }
+    li:hover{
+        background-color: #eee;
+        cursor: pointer;
+    }
+    .mark {
+        width: 10px;
+        
+        float: left;
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+    }
+   
+    .value, .topic, .rule {
+        padding: 5px 5px 5px 5px;
+        
+    }
+    .value{
+        min-height: 14px;
+    }
+    .topic, .rule{
+        font-weight: 600;
+    }
+    
+    .rule{
+        .actions{
+            font-weight: 400;
+            font-size: 10px;
+            position: absolute;
+            right: 10px;
+            display: none;
+            span{
+                text-decoration: underline;
+                color: @Primary;
+                cursor: pointer;
+            }
+        }
+    }
+    
+    .rule:hover {
+        .actions{
+            display: inline;
+        }
+    }
+    
+    .level{
+        display: block;
+    }
+    .txDot{ 
+        background-color: @Secondary;
+        height: 10px;
+        display: block;
+        width: 10px;
+        border-radius: 5px;
+        position: absolute;
+        top: 6px;
+    }
+    .txDotChild{
+        position: absolute;
+        top: 8px;
+        bottom: 0px;
+        width: 1px;
+        background-color: @Secondary;
+        left: 4px;
+    }
+    
+    .lastLine {
+        background-color: @Secondary;
+        height: 1px;
+        position: absolute;
+        top: 11px;
+        left: 5px;
+        right: 0px;
+    }
+    .vLine {
+        background-color: @Secondary;
+        height: 12px;
+        display: block;
+        width: 1px;
+        border-radius: 5px;
+        position: absolute;
+        top: 0px;
+        left: 4px;
+    }
+    
+    .parentSibling {
+        background-color: @Secondary;
+        position: absolute;
+        top: 11px;
+        left: 4px;
+        right: 0px;
+        bottom: 0px;
+        width: 1px
+    }
+    
+    .wordTaxonomy{
+        i{
+            display: none;
+        }
+    }
+    .wordTaxonomy:hover{
+        text-decoration: underline;
+        cursor: pointer;
+        
+        i{
+            display: inline;
+        }
+    }
+    
+    .off{
+        color: #ccc;
+    }
+
+}
+
+#txMenu{
+    position: absolute;
+    background-color: white;
+    z-index: 6;
+    box-shadow: 1px 1px 10px 0px @shadow;
+    opacity: 0.95;
+    border: solid 1px #aaa;
+    left: 40px;
+    top: 40px;
+    ul{
+        padding: 0px;
+        margin: 0px;
+        list-style: none;
+        li{
+            padding: 5px;
+            
+        }
+        li:hover{
+            background-color: #eef;
+            cursor: pointer;
+        }
+    }
+}
+
+#main {
+    position: fixed;
+    left: @taxonomy-width;
+    right: 0px;
+    bottom: 0px;
+    top: @title-height;
+    box-shadow: 1px 1px 16px 0px @shadow;
+}
+
+#summary {
+    height: @summary-height;
+    position: relative;
+    h1{
+        position: absolute;
+        margin: 10px;
+        padding: 0px;
+        font-weight: 400;
+        color: @BaseText;
+        font-size: 26px;
+    }
+    h2 {
+        position: absolute;
+        margin: 10px;
+        top: 45px;
+        font-size: 20px;
+        font-weight: 400;
+        color: @BaseText;
+    }
+    #scatter {
+        
+        position: absolute;
+        right: 10px;
+        top: 0px;
+        left: 300px;
+        bottom: 0px;
+        padding: 0px;
+        margin: 0px;
+        .dot{
+            cursor: pointer;
+        }
+        .domain{
+            fill: none; 
+            stroke: #ccc; 
+            stroke-width: 1; 
+        }
+    }
+}
+
+#suggestions{
+    box-shadow: 1px 1px 10px 0px @shadow;
+    position: absolute;
+    top: @summary-height;
+    bottom: @detail-height;
+    left: 0px;
+    right: 0px;
+    
+    .legWord{
+        span{
+            width: 10px;
+            height: 10px;
+            background-color: @Primary;
+            display: inline-block;
+        }
+    }
+    .legTopic{
+        span{
+            width: 10px;
+            height: 10px;
+            background-color: #ffba00;
+            display: inline-block;
+            margin-left: 20px;
+        }
+    }
+    .wordLegend{
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        border: solid 1px #ccc;
+        padding: 5px;
+    }
+}
+
+#suggestions_words{
+    hr{
+        margin: -4px 10px 0px 10px;
+        border: 0px;
+        height: 1px;
+        background-color: @Primary;
+        
+    }
+}
+
+#wordList {
+    overflow: auto;
+   ul{
+       padding: 0px;
+       list-style: none;
+       li{
+           margin: 10px;
+           overflow: hidden;
+           text-align: center;
+       }
+       li:hover {
+           border: solid 1px @Primary;
+            border-radius: 10px;
+            box-shadow: 1px 1px 5px 0px #ccc;
+           height: 108px;
+           width: 78px;
+       }
+       
+   }
+}
+
+.keywordInfo{
+    margin-left: 150px;
+    ul{
+        padding: 0px;
+        list-style: none;
+        label {
+            font-size: 18px;
+        }
+        h1{
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.keyword {
+    float: left;
+    width: 80px;
+    height: 110px;
+    margin: 5px;
+    cursor: pointer;
+    h1{
+        font-size: 12px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+    svg{
+        display: inline-block;
+        .scoreArcBase{
+            fill: #eee;
+        }
+        
+        .venn-sets-word{
+            path {
+                fill: @Primary ;
+            }
+        }
+         .venn-sets-topic{
+            path {
+                fill: @Third ;
+            }
+        }
+        .venn-area{
+            text{
+                display: none;
+            }
+            path {
+                stroke: #999;
+                stroke-width: 1px;
+            }
+        }
+    }
+                
+}
+
+#details{
+    position: absolute;
+    height: @detail-height;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    
+    .wordList{
+        
+        position: absolute;
+        left: 300px;
+        right: 220px;
+        top: 0px;
+        ul{
+            display: block;
+            list-style: none;
+            padding: 0px;
+            li{
+                text-align: center;
+                h1{
+                    font-weight: 400;
+                    overflow: hidden;
+                    padding: 0px;
+                }
+            }
+        }
+    }
+}
+
+#suggestions_words{
+    position: absolute;
+    left: 0px;
+    right: 220px;
+    bottom: 0px;
+    top: 0px;
+    
+    h1 {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 18px;
+        color: @BaseText;
+        font-weight: 400;
+        margin: 10px;
+        margin-right: 20px;
+        
+    }
+    label {
+        font-size: 12px;
+    }
+    #worLidtTitle{
+        position: absolute;
+        z-index: 2;
+        right: 0px;
+        left: 0px;
+        background-color:rgba(255,255,255,0.85);
+        border-bottom: solid 1px @Primary;
+        h1{
+           margin: 7px; 
+        }
+        
+    }
+    #wordList {
+        position: absolute;
+        padding-top: 40px;
+        left: 0px;
+        top: 0px;
+        border-bottom: 0px;
+        right: 0px;
+        bottom: 0px;
+        border-right: solid 1px #ccc;
+    }
+}
+
+#start{
+    transition: visibility 0s 2s, opacity 2s linear;
+    background-color: white;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 100;
+    text-align: center;
+    padding-top: 20px;
+    background-image: url("../img/back.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;    
+    background-size: cover;
+    
+    img {
+        width: 200px;
+    }
+    h1{
+        color: @BaseText;
+        font-weight: 400;
+        font-size: 40px;
+    }
+    input{
+        height: 30px;
+        font-size: 16px;
+        border-radius: 10px;
+        border: none;
+        padding: 10px;
+        font-weight: 100;
+        border: solid 1px @BaseText;
+        color: @BaseText;
+    }
+    button {
+       margin: 0px;
+        display: inline-block;
+        border: none;
+        font-size: 16px;
+
+        height: 30px;
+        border-radius: 10px;
+        background-color: @Secondary;
+        color: @TextOnDark;
+    }
+}
+
+#Loading{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 100;
+    text-align: center;
+    padding-top: 20px;
+    background-color: white;
+}
+.highlight{
+    border: solid 1px @Primary;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px 0px #ccc;
+    height: 108px !important;
+    width: 78px !important;
+}
+
+
+
