@@ -1,115 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html ng-app="viz">
 <head>
- 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Taxonomy Generation and Visualization</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <style>
-    body {
-        padding-top: 70px;
-        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-    }
-    .center {
-        float: none;
-        margin-left: auto;
-        margin-right: auto;
-    }   
-
-    svg {
-        font-family: "Helvetica Neue", Helvetica;
-    }
-
-    .line {
-        fill: none;
-        stroke: #000;
-        stroke-width: 2px;
-    }
-    </style>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+    <title>Taxonomy</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="shortcut icon" href="img/favico.png" />
+    <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="css/style.css" type="text/css" rel="stylesheet">
 </head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Taxonomy Generation and Visualization</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-    <!-- Page Content -->
-    <div class="container">
-
-        <!-- Page Heading -->
-        <div class="row">
-            <div class="col-lg-6">
-                <h2 class="page-header">
-                    <small>Taxonomy Generation</small>
-                </h2>
-            </div>
-        </div>
-        <!-- /.row -->
-        <div class="row">
-            <div class="input-group col-lg-6 center">
-                <input type="text" class="form-control" id="topicTxt" placeholder="Type a topic name">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" onclick="goToViz()" type="button">Go</button>
-                </span>
-            </div><!-- /input-group -->
-        </div>
-
-        <div class="row">
-            <div class="col-lg-9 center" id="chart1">
-            </div>
-        </div>
-        <!-- /.row -->
-
+<body ng-controller="vizCtrl">
+    <div id="title">
+        <ul>
+           <li><h1 style="width:140px">Taxonomy</h1></li><li>
+               <button  style="width:80px">Load File...</button></li><li>
+               <label>Dataset:</label>
+                <select ng-model="index" ng-options="i.desc for i in indices">
+                </select>
+            </li>
+            <li>
+                <label>Method:</label>
+                <select ng-model="srchType">
+                    <option value="taxonomy">Taxonomy</option>
+                    <option value="search">Search</option>
+                </select>
+                <input ng-show="srchType == 'search'" type="search" ng-model="searchText" />
+            </li>
+            <li>
+                <label>Autoload</label>
+                <input type="checkbox" />
+            </li>
+            <li style="position: absolute; right: 134px; top:0px"><button ng-click="load()">Load</button></li>
+            <li style="position: absolute; right: 0px; top: 0px">
+                <h1 style="font-size: 14px; padding: 8px; height: 19px" ondrop="dropIg(event)" ondragover="allowDrop(event)" class="dropzone" >Ignored Words <i class="fa fa-caret-down"></i></h1>
+            </li>
+        </ul>
     </div>
-    <!-- /.container -->
+    <div id="taxonomy">
+        <ul class="TaxonomyList" >
+            <li ng-repeat="node in baseTaxonomy" ondrop="drop1(event)" ondragover="allowDrop(event)" class="dropzone">
+               <span class="mark" ng-style="{left: (10*($index)) + 'px'}"  ng-repeat="m in node.marks track by $index">
+                  <div class="lastLine" ng-if="$last"></div>
+                  <div class="vLine" ng-if="m == 'parent_sibling' || $last"></div>
+                  <div class="parentSibling"  ng-if="m == 'parent_sibling'"></div>
+               </span>
+               <span class="mark" ng-style="{left: (10*(node.level-1)) + 'px'}">
+                   <div class="txDot"></div>
+                   <div class="txDotChild" ng-if="(node.child && node.child.length > 0) || (node.text && node.text.length > 0)"></div>
+               </span>
+               <span class="level value rule" ng-style="{'margin-left': (10*(node.level)) + 'px'}" ng-if="node.type != 'value'">
+                   {{node.value}}
+                   <span class="actions"> 
+                       <span ng-hide="node.noRemove" ng-click="node.remove()">REMOVE</span>
+                       <span  ng-click="node.add('AND')">AND</span>
+                       <span  ng-click="node.add('OR')">OR</span>
+                       <span  ng-click="node.add('NOT')">NOT</span>
+                   </span>
+               </span>
+               <span class="level value" ng-style="{'margin-left': (10*(node.level)) + 'px'}" ng-if="node.type == 'value'">
+                  <span ng-repeat="w in node.value" ng-click="toggle(w)" ng-dblclick="remove(w, node.value)" ><span ng-class="{off: w.off}" class="wordTaxonomy">{{w.word}}</span><span ng-if="$last != true">, </span></span>
+               </span>
+            </li>
+        </ul>
+    </div>
+    <div id="main">
+       
+        <div id="summary">
+            <h1>{{ topic }}</h1>
+            <h2><b>{{doc_count}}</b> documents</h2>
+            <div id="scatter">
+                <scatter data="keywords"></scatter>
+            </div>
+        </div>
+        <div id="suggestions">
+           <div ng-show="Loading" id="Loading"><h1>Loading...</h1></div>
+            <div id="suggestions_words">
+                <div id="worLidtTitle">
+                   <h1>Suggestions</h1>
+                    <label>Sort</label>
+                    <select>
+                        <option>Score</option>
+                        <option>Doc Count</option>
+                        <option>Bg Count</option>
+                    </select>
+                    <span class="wordLegend"> <span  class="legWord"><span></span> Keyword</span> <span  class="legTopic"><span></span> Topic</span></span>
+                </div>
+                
+                <div id="wordList">
+                    <ul>
+                        <li ng-click="selectWord(word)" draggable="true" ondragstart="drag(event)"  class="keyword" ng-class="{highlight: word.highlight}" ng-repeat="word in keywords" ng-mouseover="highlight(word)">
+                            <keyword word="word" topic="topicData" ></keyword>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="documents">
+                <h1>Documents</h1>
+                <ul>
+                    <li ng-repeat="doc in documents">
+                        <span ng-bind-html="doc.highlight.text[0]"></span>
+                    </li>
+                  
+                </ul>
+            </div>
+        </div>
+        <div id="details" ng-repeat="word in selected" >
+           
+            <keyword word="word" detail="true" class="keyword" topic="topicData"></keyword>
+           <div class="keywordInfo">
+             <ul>
+                 <li><h1>{{word.key}}</h1></li>
+                 <li><label>{{word.score | number:2}}</label> score</li>
+                 <li><label>{{word.doc_count}}</label> docs</li>
+                 <li><label>{{word.bg_count}}</label> out of topic</li>
+             </ul>  
+           </div>
+            <div class="wordList">
+                <ul>
+                    <li draggable="true" ondragstart="drag_child(event)"  class="keyword" ng-class="{highlight: wordChild.highlight}" ng-repeat="wordChild in word.details.keywords" ng-mouseover="highlight(wordChild)">
+                        <keyword word="wordChild" topic="word.details.topicData" ></keyword>
+                    </li>
+                </ul>
+            </div>
+            <div class="documents">
+                <h1>Documents</h1>
+                <ul>
+                    <li ng-repeat="doc in word.details.documents">
+                        <span ng-bind-html="doc.highlight.text[0]"></span>
+                    </li>
+                  
+                </ul>
+            </div>
 
-    <!-- jQuery Version 1.11.1 -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <script>
-        function goToViz(){
-            window.location = "viz.html#topic=" + $("#topicTxt").val();
-        }
-    </script>
+        </div>
+    </div>
     
-
+    <div ng-show="showStart" id="start">
+       <img src="img/favico.png">
+        <h1>Taxonomy Generator</h1>
+        <div>
+            <input type="search" placeholder="Type your topic" ng-model="topic" /> <button ng-click="start()">Start</button>
+        </div>
+        <div>
+           <h2 ng-show="Loading">Loading...</h2>
+        </div>
+    </div>
+    
+    
 </body>
-
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="vendors/elasticsearch.angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.js"></script>
+<script src="js/services.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="js/venn.js"></script>
+<script src="js/main.js"></script>
+<script src="js/keyword.js"></script>
+<script src="js/scatter.js"></script>
 </html>
