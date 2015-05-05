@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html ng-app="viz">
+<head>
+    <title>Taxonomy</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="shortcut icon" href="img/favico.png" />
+    <link href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="css/style.css" type="text/css" rel="stylesheet">
+</head>
+<body ng-controller="vizCtrl">
+    <div id="title">
+        <ul>
+           <li><h1 style="width:140px">Taxonomy</h1></li><li>
+               <button  style="width:80px">Load File...</button></li><li>
+               <label>Dataset:</label>
+                <select ng-model="index" ng-options="i.desc for i in indices">
+                </select>
+            </li>
+            <li>
+                <label>Method:</label>
+                <select ng-model="srchType">
+                    <option value="taxonomy">Taxonomy</option>
+                    <option value="search">Search</option>
+                </select>
+                <input ng-show="srchType == 'search'" type="search" ng-model="searchText" />
+            </li>
+            <li>
+                <label>Autoload</label>
+                <input type="checkbox" />
+            </li>
+            <li style="position: absolute; right: 134px; top:0px"><button ng-click="load()">Load</button></li>
+            <li style="position: absolute; right: 0px; top: 0px">
+                <h1 style="font-size: 14px; padding: 8px; height: 19px" ondrop="dropIg(event)" ondragover="allowDrop(event)" class="dropzone" >Ignored Words <i class="fa fa-caret-down"></i></h1>
+            </li>
+        </ul>
+    </div>
+    <div id="taxonomy">
+        <ul class="TaxonomyList" >
+            <li ng-repeat="node in baseTaxonomy" ondrop="drop1(event)" ondragover="allowDrop(event)" class="dropzone">
+               <span class="mark" ng-style="{left: (10*($index)) + 'px'}"  ng-repeat="m in node.marks track by $index">
+                  <div class="lastLine" ng-if="$last"></div>
+                  <div class="vLine" ng-if="m == 'parent_sibling' || $last"></div>
+                  <div class="parentSibling"  ng-if="m == 'parent_sibling'"></div>
+               </span>
+               <span class="mark" ng-style="{left: (10*(node.level-1)) + 'px'}">
+                   <div class="txDot"></div>
+                   <div class="txDotChild" ng-if="(node.child && node.child.length > 0) || (node.text && node.text.length > 0)"></div>
+               </span>
+               <span class="level value rule" ng-style="{'margin-left': (10*(node.level)) + 'px'}" ng-if="node.type != 'value'">
+                   {{node.value}}
+                   <span class="actions"> 
+                       <span ng-hide="node.noRemove" ng-click="node.remove()">REMOVE</span>
+                       <span  ng-click="node.add('AND')">AND</span>
+                       <span  ng-click="node.add('OR')">OR</span>
+                       <span  ng-click="node.add('NOT')">NOT</span>
+                   </span>
+               </span>
+               <span class="level value" ng-style="{'margin-left': (10*(node.level)) + 'px'}" ng-if="node.type == 'value'">
+                  <span ng-repeat="w in node.value" ng-click="toggle(w)" ng-dblclick="remove(w, node.value)" ><span ng-class="{off: w.off}" class="wordTaxonomy">{{w.word}}</span><span ng-if="$last != true">, </span></span>
+               </span>
+            </li>
+        </ul>
+    </div>
+    <div id="main">
+       
+        <div id="summary">
+            <h1>{{ topic }}</h1>
+            <h2><b>{{doc_count}}</b> documents</h2>
+            <div id="scatter">
+                <scatter data="keywords"></scatter>
+            </div>
+        </div>
+        <div id="suggestions">
+           <div ng-show="Loading" id="Loading"><h1>Loading...</h1></div>
+            <div id="suggestions_words">
+                <div id="worLidtTitle">
+                   <h1>Suggestions</h1>
+                    <label>Sort</label>
+                    <select>
+                        <option>Score</option>
+                        <option>Doc Count</option>
+                        <option>Bg Count</option>
+                    </select>
+                    <span class="wordLegend"> <span  class="legWord"><span></span> Keyword</span> <span  class="legTopic"><span></span> Topic</span></span>
+                </div>
+                
+                <div id="wordList">
+                    <ul>
+                        <li ng-click="selectWord(word)" draggable="true" ondragstart="drag(event)"  class="keyword" ng-class="{highlight: word.highlight}" ng-repeat="word in keywords" ng-mouseover="highlight(word)">
+                            <keyword word="word" topic="topicData" ></keyword>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="documents">
+                <h1>Documents</h1>
+                <ul>
+                    <li ng-repeat="doc in documents">
+                        <span ng-bind-html="doc.highlight.text[0]"></span>
+                    </li>
+                  
+                </ul>
+            </div>
+        </div>
+        <div id="details" ng-repeat="word in selected" >
+           
+            <keyword word="word" detail="true" class="keyword" topic="topicData"></keyword>
+           <div class="keywordInfo">
+             <ul>
+                 <li><h1>{{word.key}}</h1></li>
+                 <li><label>{{word.score | number:2}}</label> score</li>
+                 <li><label>{{word.doc_count}}</label> docs</li>
+                 <li><label>{{word.bg_count}}</label> out of topic</li>
+             </ul>  
+           </div>
+            <div class="wordList">
+                <ul>
+                    <li draggable="true" ondragstart="drag_child(event)"  class="keyword" ng-class="{highlight: wordChild.highlight}" ng-repeat="wordChild in word.details.keywords" ng-mouseover="highlight(wordChild)">
+                        <keyword word="wordChild" topic="word.details.topicData" ></keyword>
+                    </li>
+                </ul>
+            </div>
+            <div class="documents">
+                <h1>Documents</h1>
+                <ul>
+                    <li ng-repeat="doc in word.details.documents">
+                        <span ng-bind-html="doc.highlight.text[0]"></span>
+                    </li>
+                  
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    
+    <div ng-show="showStart" id="start">
+       <img src="img/favico.png">
+        <h1>Taxonomy Generator</h1>
+        <div>
+            <input type="search" placeholder="Type your topic" ng-model="topic" /> <button ng-click="start()">Start</button>
+        </div>
+        <div>
+           <h2 ng-show="Loading">Loading...</h2>
+        </div>
+    </div>
+    
+    
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="vendors/elasticsearch.angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-sanitize.js"></script>
+<script src="js/services.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="js/venn.js"></script>
+<script src="js/main.js"></script>
+<script src="js/keyword.js"></script>
+<script src="js/scatter.js"></script>
+</html>
