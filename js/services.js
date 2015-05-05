@@ -2,7 +2,7 @@ var vizServices = angular.module('vizServices', ['elasticsearch']);
 
 vizServices.service('client', function (esFactory) {
     return esFactory({
-        host: 'http://es_admin:klapaucios@localhost:9200',
+        host: 'http://user:123456@vgc.poly.edu/projects/r2sense',
         apiVersion: '1.4'
     });
 });
@@ -64,7 +64,7 @@ vizServices.factory('db', function(client) {
     }
     
     self.exclude = function(tx){
-        var exclude = "@.*|_link|" + self.words.join("|") + "|" + tx.ignore.join("|");
+        var exclude = "@.*|.*_link.*|" + self.words.join("|") + "|" + tx.ignore.join("|");
         return exclude;
     }
     

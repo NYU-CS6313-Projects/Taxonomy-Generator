@@ -88,7 +88,7 @@ viz.controller('vizCtrl', function ($scope, db) {
     $scope.showStart = true;
     $scope.taxonomy = {
         type: "topic",
-        value: "General",
+        value: "Contains",
         text: [],
         childs: [],
         ignore: []
@@ -96,7 +96,10 @@ viz.controller('vizCtrl', function ($scope, db) {
     $scope.baseTaxonomy = [];
     $scope.inTaxonomy = [];
     $scope.Loading = false;
-    $scope.indices = [{desc:"Twitter", index: "twitter2", field:"text", type: "status"}];
+    $scope.indices = [
+            {desc:"Twitter", index: "twitter2", field:"text", type: "status"},
+            {desc:"Twitter with bigrams", index: "twitter_shingle", field:"text", type: "status"}
+    ];
     $scope.index = $scope.indices[0];
     
     $scope.srchType = 'taxonomy';
