@@ -119,7 +119,9 @@ viz.controller('vizCtrl', function ($scope, db) {
     $scope.Loading = false;
     $scope.indices = [
             {desc:"Twitter", index: "twitter2", field:"text", type: "status"},
-            {desc:"Twitter with bigrams", index: "twitter_shingle", field:"text", type: "status"}
+            {desc:"Twitter with bigrams", index: "twitter_shingle", field:"text", type: "status"},
+            {desc:"Accern", index: "accern", field:"text", type: "titles"},
+            {desc:"Accern bigrams", index: "accern_shingles", field:"text", type: "titles"}
     ];
     $scope.index = $scope.indices[0];
     

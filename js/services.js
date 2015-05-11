@@ -55,6 +55,8 @@ vizServices.factory('db', function(client) {
     }
     
     self.bigrams = function(search){
+        var index = self.index == "twitter2" ? "twitter_shingle" : "accern_shingles"
+                
         wordsCount = 20;
         var exclude = "@.*|_link|" + search ;
         var include = search + ".*|.*" + search ;
