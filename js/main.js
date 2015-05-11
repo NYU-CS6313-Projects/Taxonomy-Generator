@@ -301,8 +301,8 @@ viz.controller('vizCtrl', function ($scope, db) {
     }
     
     //Temp
-    $scope.topic = "violence";
-    $scope.start();
+    //$scope.topic = "violence";
+    //$scope.start();
 })
 
 
