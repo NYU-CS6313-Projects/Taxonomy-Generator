@@ -166,6 +166,8 @@ viz.controller('vizCtrl', function ($scope, db) {
     $scope.selectWord = function(keyword){
         
         $scope.selected = [keyword];
+        db.index = $scope.index.index;
+        db.type = $scope.index.type;
         db.load(keyword.key, "detail", $scope.taxonomy).then(function(result){
             keyword.details = { 
                 doc_count: result.aggregations.NAME.doc_count,
@@ -179,6 +181,8 @@ viz.controller('vizCtrl', function ($scope, db) {
     
     $scope.showMoreDetails = function(){
         var keyword = $scope.selected[0];
+        db.index = $scope.index.index;
+        db.type = $scope.index.type;
         db.load(keyword.key, "detail").then(function(result){
             keyword.detailsGlobal = { 
                 doc_count: result.aggregations.NAME.doc_count,
