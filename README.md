@@ -2,7 +2,7 @@
 
 ###link:
 
-A live demo can be found [here](http://nyu-cs6313-projects.github.io/sp2015-group1/index.html).
+A live demo can be found [here](http://nyu-cs6313-projects.github.io/Taxonomy-Generator/index.html).
 
 ###Project Info:
 
