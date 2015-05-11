@@ -2,7 +2,8 @@ viz.directive("scatter", function($window) {
   return{
     restrict: "EA",
     scope: {
-        data: '='
+        data: '=',
+        select: '='
     },
     link: function(scope, elem, attrs){
         scope.board = d3.select(elem[0]);
@@ -89,6 +90,10 @@ viz.directive("scatter", function($window) {
               .attr("cx", xMap)
               .attr("cy", yMap)
               .style("fill", function(d) { return color(cValue(d));})
+                .on("click", function(d){
+                    if(scope.select)
+                        scope.select(d);
+                })
                 .on("mouseover", function(d) {
                     scope.$apply(function(){ 
                         d.highlight = true;

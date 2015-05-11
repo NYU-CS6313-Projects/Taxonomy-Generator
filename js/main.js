@@ -1,8 +1,8 @@
 var primary = "#489BD5";
 var Secondary = "#B3D548"; 
-
+var detailStatus = "hidden";
 var viz = angular.module('viz', ['vizServices', 'ngSanitize']);
-
+var detailHeight = 150;
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -25,7 +25,16 @@ function dropIg(evt){
   
     var data = evt.dataTransfer.getData("word");
     var scope = angular.element(document.getElementsByTagName("body")).scope();
-    scope.taxonomy.ignore.push(data);
+    var has = false;
+    scope.taxonomy.ignore.forEach(function(d){
+        if(d == data)
+            has = true;
+    })
+    if(!has){
+        scope.$apply(function () {
+            scope.taxonomy.ignore.push(data);
+        });
+    }
     for(i=0; i< evt.path.length; i++)
     {
         var el = evt.path[i];
@@ -61,6 +70,17 @@ function drop1(ev) {
     
 }
 
+function resize(show, big){
+    var fullH = window.innerHeight;
+    var top = fullH - (show ? detailHeight : 10000)+5;
+   
+    d3.select("#suggestions").style({'bottom': (show ? detailHeight : 0) + 'px'});
+    
+    setTimeout(function() {
+     d3.select("#details").style({'top': top + 'px'});
+    },1);
+}
+
 document.addEventListener("dragenter", function( evt ) {
     for(i=0; i< evt.path.length; i++)
     {
@@ -85,6 +105,7 @@ document.addEventListener("dragleave", function( evt ) {
 
 viz.controller('vizCtrl', function ($scope, db) {
     //Defaults ------------------------------------------------------
+    $scope.sortKeywords = 'score';
     $scope.showStart = true;
     $scope.taxonomy = {
         type: "topic",
@@ -110,6 +131,8 @@ viz.controller('vizCtrl', function ($scope, db) {
         console.log('high');
     }
     
+    
+    
     //Actions ------------------------------------------------------
     $scope.start = function(){
         if($scope.topic && $scope.topic.length > 4) {
@@ -133,19 +156,48 @@ viz.controller('vizCtrl', function ($scope, db) {
     }
     
     //KeyWord
+    $scope.unselectWord = function(){
+        $scope.selected = undefined;
+        resize($scope.selected, $scope.showMoreDetails);
+    }
+    
     $scope.selectWord = function(keyword){
+        
         $scope.selected = [keyword];
-        db.load(keyword.key, "detail").then(function(result){
-            
+        db.load(keyword.key, "detail", $scope.taxonomy).then(function(result){
             keyword.details = { 
                 doc_count: result.aggregations.NAME.doc_count,
                 documents: result.hits.hits,
                 keywords: result.aggregations.NAME.buckets,
                 topicData: { count:  result.aggregations.NAME.doc_count}
             }
-            console.log(keyword.details);
-           
-        });   
+        });
+        setTimeout(function () { resize($scope.selectWord, $scope.showMoreDetails) }, 10);
+    }
+    
+    $scope.showMoreDetails = function(){
+        var keyword = $scope.selected[0];
+        db.load(keyword.key, "detail").then(function(result){
+            keyword.detailsGlobal = { 
+                doc_count: result.aggregations.NAME.doc_count,
+                documents: result.hits.hits,
+                keywords: result.aggregations.NAME.buckets,
+                topicData: { count:  result.aggregations.NAME.doc_count}
+            }
+        });
+        db.bigrams(keyword.key).then(function(result){
+            keyword.bigrmas = result.aggregations.NAME.buckets;
+            keyword.maxBigram = d3.max(keyword.bigrmas, function(d) {return d.bg_count});
+            console.log(keyword.maxBigram);
+        });
+        $scope.moreDetails = true;
+    }
+    
+    $scope.removeIgnore = function(ig){
+        var idx = $scope.taxonomy.ignore.indexOf(ig);
+        if(idx >= 0){
+            $scope.taxonomy.ignore.splice(idx, 1);
+        }
     }
     
     //Server
@@ -168,6 +220,12 @@ viz.controller('vizCtrl', function ($scope, db) {
         });   
     }
     
+    
+    var w = angular.element(window);
+    w.bind('resize', function () {
+        resize($scope.selected, $scope.showMoreDetails);
+    });
+    
     //Utils
     $scope.updateBaseTaxonomy = function(){
         $scope.baseTaxonomy = [];
@@ -188,6 +246,14 @@ viz.controller('vizCtrl', function ($scope, db) {
         node.add = function(type){
             node.childs.push({type: 'rule', value: type, childs: [], text: []});
             $scope.updateBaseTaxonomy();
+        }
+        
+        node.addWord = function(){
+            var word = prompt("Type the new keyword")
+            
+            node.text.push({word: word});
+            $scope.updateBaseTaxonomy();
+            console.log(node);
         }
         
         node.remove = function(){
@@ -235,8 +301,8 @@ viz.controller('vizCtrl', function ($scope, db) {
     }
     
     //Temp
-    //$scope.topic = "Climate Change";
-    //$scope.start();
+    $scope.topic = "violence";
+    $scope.start();
 })
 
 
@@ -264,7 +330,19 @@ if (!Array.prototype.findIndex) {
   };
 }
 
-
+viz.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+ 
+                event.preventDefault();
+            }
+        });
+    };
+});
 
 
 

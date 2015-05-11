@@ -10,6 +10,7 @@ body {
   font-family: 'Quicksand', sans-serif;
   margin: 0px;
   font-size: 12px;
+  overflow: hidden;
 }
 body .axis .tick line {
   stroke: lightgrey;
@@ -60,6 +61,21 @@ em {
   color: #489bd5;
   text-decoration: underline;
 }
+#overlay {
+  top: 0px;
+  transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
+.overlay_show {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: black;
+  z-index: 5;
+  opacity: 0.5;
+  transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
 #title {
   margin: 0px;
   padding: 0px;
@@ -108,6 +124,36 @@ em {
   color: white;
   font-weight: 400;
   display: inline-block;
+}
+#title #ignoredWords {
+  cursor: pointer;
+}
+#title #ignoredWords ul {
+  display: none;
+  background-color: white;
+  opacity: 0.9;
+  box-shadow: 1px 1px 10px 0px #ccc;
+  border: solid 1px #ccc;
+}
+#title #ignoredWords li {
+  float: none;
+  display: block;
+  padding: 2px;
+  overflow: hidden;
+}
+#title #ignoredWords li i {
+  display: none;
+}
+#title #ignoredWords li:hover {
+  background-color: #489bd5;
+  color: white;
+  cursor: pointer;
+}
+#title #ignoredWords li:hover i {
+  display: inline;
+}
+#title #ignoredWords:hover ul {
+  display: block;
 }
 #taxonomy {
   position: fixed;
@@ -294,9 +340,10 @@ em {
   box-shadow: 1px 1px 10px 0px #cccccc;
   position: absolute;
   top: 100px;
-  bottom: 150px;
+  bottom: 0px;
   left: 0px;
   right: 0px;
+  transition: all 0.5s ease-out;
 }
 #suggestions .legWord span {
   width: 10px;
@@ -389,15 +436,21 @@ em {
 }
 #details {
   position: absolute;
-  height: 150px;
   bottom: 0px;
-  left: 0px;
+  left: 230px;
   right: 0px;
+  top: 1000px;
+  transition: all 0.5s ease-out;
+  z-index: 10;
+  background-color: white;
 }
 #details .wordList {
+  background-color: white;
+  overflow: hidden;
   position: absolute;
-  left: 300px;
+  left: 360px;
   right: 220px;
+  height: 120px;
   top: 0px;
 }
 #details .wordList ul {
@@ -412,6 +465,59 @@ em {
   font-weight: 400;
   overflow: hidden;
   padding: 0px;
+}
+.details_show {
+  top: 30px !important;
+  left: 30px !important;
+  bottom: 30px !important;
+  right: 30px !important;
+  box-shadow: 1px 1px 5px 0px #ccc;
+}
+.details_show .topic {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 49%;
+  left: 400px;
+}
+.details_show #bigrams {
+  position: absolute;
+  left: 0px;
+  top: 150px;
+  bottom: 0px;
+  width: 360px;
+  overflow-x: auto;
+  padding: 10px;
+}
+.details_show .bigramBar {
+  width: 80px;
+  height: 10px;
+  display: inline-block;
+  background-color: #489bd5;
+}
+.details_show .titleWords {
+  padding-bottom: 3px;
+  font-size: 17px;
+  border-bottom: solid 1px #ccc;
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+}
+.details_show .global {
+  position: absolute;
+  top: 49%;
+  height: 49%;
+  right: 0px;
+  left: 400px;
+}
+.details_show .wordList {
+  top: 40px !important;
+  bottom: 0px !important;
+  height: auto !important;
+  overflow: auto !important;
+  left: 0px !important;
+  border-bottom: solid 1px #ccc;
 }
 #suggestions_words {
   position: absolute;
