@@ -9,7 +9,7 @@ vizServices.service('client', function (esFactory) {
 
 vizServices.factory('db', function(client) {
     
-    self.load = function(search, type){
+    self.load = function(search, type, taxonomy){
         wordsCount = 50;
         
         if(type == 'taxonomy'){
@@ -20,8 +20,10 @@ vizServices.factory('db', function(client) {
         
         if(type == 'detail')
         {
-             var exclude = "@.*|_link|" + search ;
-            wordsCount = 5;
+            var exclude = "@.*|_link|" + search ;
+            if(taxonomy)
+                search = "(" + self.taxonomyToSearch(taxonomy) + ") AND " + search;
+            wordsCount = 20;
         }
         
         var query = {
@@ -48,6 +50,39 @@ vizServices.factory('db', function(client) {
           index: self.index,
           type: self.type,
           size: 50,
+          body: query
+        });
+    }
+    
+    self.bigrams = function(search){
+        wordsCount = 20;
+        var exclude = "@.*|_link|" + search ;
+        var include = search + ".*|.*" + search ;
+        var query = {
+            "fields": ["text"], 
+            "query": {
+                "query_string": {
+                      "default_field": "text",
+                      "query": "text: " + search
+                    }
+                }, 
+            "highlight": {"fields": {"text": {}}}, 
+            "aggs": {
+                "NAME": {
+                  "significant_terms": {
+                    "field": "text",
+                    "size": wordsCount,
+                      "include":include,
+                    "exclude": exclude,
+                      "gnd": {}
+                  }
+                }
+            }
+        }
+        return client.search({
+          index: 'twitter_shingle',
+          type: self.type,
+          size: 0,
           body: query
         });
     }

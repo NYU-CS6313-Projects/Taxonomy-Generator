@@ -25,15 +25,14 @@
                     <option value="taxonomy">Taxonomy</option>
                     <option value="search">Search</option>
                 </select>
-                <input ng-show="srchType == 'search'" type="search" ng-model="searchText" />
-            </li>
-            <li>
-                <label>Autoload</label>
-                <input type="checkbox" />
+                <input ng-show="srchType == 'search'" ng-enter="load()" type="search" ng-model="searchText" />
             </li>
             <li style="position: absolute; right: 134px; top:0px"><button ng-click="load()">Load</button></li>
-            <li style="position: absolute; right: 0px; top: 0px">
+            <li style="position: absolute; right: 0px; top: 0px" id="ignoredWords">
                 <h1 style="font-size: 14px; padding: 8px; height: 19px" ondrop="dropIg(event)" ondragover="allowDrop(event)" class="dropzone" >Ignored Words <i class="fa fa-caret-down"></i></h1>
+                <ul>
+                    <li ng-repeat="ig in taxonomy.ignore">{{ig}} <i ng-click="removeIgnore(ig)" class="fa fa-trash-o"></i></li>
+                </ul>
             </li>
         </ul>
     </div>
@@ -53,6 +52,7 @@
                    {{node.value}}
                    <span class="actions"> 
                        <span ng-hide="node.noRemove" ng-click="node.remove()">REMOVE</span>
+                       <span  ng-click="node.addWord()">ADD</span>
                        <span  ng-click="node.add('AND')">AND</span>
                        <span  ng-click="node.add('OR')">OR</span>
                        <span  ng-click="node.add('NOT')">NOT</span>
@@ -69,8 +69,8 @@
         <div id="summary">
             <h1>{{ topic }}</h1>
             <h2><b>{{doc_count}}</b> documents</h2>
-            <div id="scatter">
-                <scatter data="keywords"></scatter>
+            <div id="scatter" style="text-align:right">
+                <scatter data="keywords" select="selectWord"></scatter>
             </div>
         </div>
         <div id="suggestions">
@@ -79,17 +79,17 @@
                 <div id="worLidtTitle">
                    <h1>Suggestions</h1>
                     <label>Sort</label>
-                    <select>
-                        <option>Score</option>
-                        <option>Doc Count</option>
-                        <option>Bg Count</option>
+                    <select ng-model="sortKeywords">
+                        <option value="score">Score</option>
+                        <option value="doc_count">Doc Count</option>
+                        <option value="bg_count">Bg Count</option>
                     </select>
                     <span class="wordLegend"> <span  class="legWord"><span></span> Keyword</span> <span  class="legTopic"><span></span> Topic</span></span>
                 </div>
                 
                 <div id="wordList">
                     <ul>
-                        <li ng-click="selectWord(word)" draggable="true" ondragstart="drag(event)"  class="keyword" ng-class="{highlight: word.highlight}" ng-repeat="word in keywords" ng-mouseover="highlight(word)">
+                        <li ng-click="selectWord(word)" draggable="true" ondragstart="drag(event)"  class="keyword" ng-class="{highlight: word.highlight}" ng-repeat="word in keywords | orderBy:'-'+sortKeywords" ng-mouseover="highlight(word)">
                             <keyword word="word" topic="topicData" ></keyword>
                         </li>
                     </ul>
@@ -105,9 +105,12 @@
                 </ul>
             </div>
         </div>
-        <div id="details" ng-repeat="word in selected" >
+        
+        
+    </div>
+    <div id="details" ng-class="{details_show: moreDetails}" ng-repeat="word in selected" >
            
-            <keyword word="word" detail="true" class="keyword" topic="topicData"></keyword>
+           <keyword word="word" detail="true" class="keyword" topic="topicData"></keyword>
            <div class="keywordInfo">
              <ul>
                  <li><h1>{{word.key}}</h1></li>
@@ -116,26 +119,60 @@
                  <li><label>{{word.bg_count}}</label> out of topic</li>
              </ul>  
            </div>
-            <div class="wordList">
-                <ul>
-                    <li draggable="true" ondragstart="drag_child(event)"  class="keyword" ng-class="{highlight: wordChild.highlight}" ng-repeat="wordChild in word.details.keywords" ng-mouseover="highlight(wordChild)">
-                        <keyword word="wordChild" topic="word.details.topicData" ></keyword>
-                    </li>
-                </ul>
-            </div>
-            <div class="documents">
-                <h1>Documents</h1>
-                <ul>
-                    <li ng-repeat="doc in word.details.documents">
-                        <span ng-bind-html="doc.highlight.text[0]"></span>
-                    </li>
-                  
-                </ul>
-            </div>
+           <div class="topic">
+               <h1 ng-show="moreDetails" class="titleWords">Topic + {{word.key}}</h1>
+                <div class="wordList">
+                    <ul>
+                        <li draggable="true" ng-click="selectWord(wordChild)" ondragstart="drag_child(event)"  class="keyword" ng-class="{highlight: wordChild.highlight}" ng-repeat="wordChild in word.details.keywords" ng-mouseover="highlight(wordChild)">
+                            <keyword word="wordChild" topic="word.details.topicData" ></keyword>
+                        </li>
+                    </ul>
+                </div>
+                <div class="documents">
+                    <h1>Documents</h1>
+                    <ul>
+                        <li ng-repeat="doc in word.details.documents">
+                            <span ng-bind-html="doc.highlight.text[0]"></span>
+                        </li>
 
+                    </ul>
+                </div>
+            </div>
+            <div class="global" ng-show="moreDetails">
+               <h1 class="titleWords">Just {{word.key}}</h1>
+                <div class="wordList">
+                    <ul>
+                        <li draggable="true" ng-click="selectWord(wordChild)" ondragstart="drag_child(event)"  class="keyword" ng-class="{highlight: wordChild.highlight}" ng-repeat="wordChild in word.detailsGlobal.keywords" ng-mouseover="highlight(wordChild)">
+                            <keyword word="wordChild" topic="word.detailsGlobal.topicData" ></keyword>
+                        </li>
+                    </ul>
+                </div>
+                <div class="documents">
+                    <h1>Documents</h1>
+                    <ul>
+                        <li ng-repeat="doc in word.detailsGlobal.documents">
+                            <span ng-bind-html="doc.highlight.text[0]"></span>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div id="bigrams">
+                <table>
+                   <tr  ng-repeat="bigram in word.bigrmas">
+                       <td style="text-align:right;">{{bigram.key.split(" ")[0] != word.key ? bigram.key.split(" ")[0] : ""}}</td>
+                       <td>{{word.key}}</td>
+                       <td>{{bigram.key.split(" ")[1] != word.key ? bigram.key.split(" ")[1] : ""}}</td>
+                       <td style=""><span class="bigramBar" ng-style="{'width': (bigram.doc_count/word.maxBigram*80) + 'px'}"><span></span></span> {{bigram.doc_count}} </td>
+                   </tr>
+                
+                </table>
+            </div>
+            <div style="text-align:center; margin: -15px;" ng-show="!moreDetails">
+                <button ng-click="showMoreDetails()">More</button> <button ng-click="unselectWord()">Close</button>
+            </div>
         </div>
-    </div>
-    
+    <div id="overlay" ng-class="{overlay_show: moreDetails}" ng-click="moreDetails = false">a</div>
     <div ng-show="showStart" id="start">
        <img src="img/favico.png">
         <h1>Taxonomy Generator</h1>
