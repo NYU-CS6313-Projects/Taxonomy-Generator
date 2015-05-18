@@ -4,7 +4,9 @@
 
 A live demo can be found [here](http://nyu-cs6313-projects.github.io/Taxonomy-Generator/index.html).
 
-###Project Info:
+A video demo can be found [here](https://vimeo.com/127993895).
+
+###Project Summary:
 
 This project aims to produce an easy and fast way for users to create taxonomies through interaction and visualization.
 
