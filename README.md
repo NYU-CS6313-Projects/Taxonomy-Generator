@@ -6,7 +6,7 @@ A live demo can be found [here](http://nyu-cs6313-projects.github.io/Taxonomy-Ge
 
 A video demo can be found [here](https://vimeo.com/127993895).
 
-The final document of the project can be found
+The final paper of this project can be found
 [here](https://github.com/NYU-CS6313-Projects/Taxonomy-Generator/blob/master/TaxonomyGenerator.pdf).
 
 ###Project Summary:
