@@ -6,7 +6,12 @@ A live demo can be found [here](http://nyu-cs6313-projects.github.io/Taxonomy-Ge
 
 A video demo can be found [here](https://vimeo.com/127993895).
 
+The final document of the project can be found
+[here](https://github.com/NYU-CS6313-Projects/Taxonomy-Generator/blob/master/TaxonomyGenerator.pdf).
+
 ###Project Summary:
+
+![Taxonomy Generator](https://github.com/NYU-CS6313-Projects/Taxonomy-Generator/blob/master/img/video.png)
 
 This project aims to produce an easy and fast way for users to create taxonomies through interaction and visualization.
 
@@ -17,5 +22,3 @@ To solve this problem many approaches have been proposed many of them relying in
 ###Project group member: 
 
 Cristian, Peixin, Wei
-
-
